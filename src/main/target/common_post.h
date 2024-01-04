@@ -90,6 +90,14 @@ extern uint8_t __config_end;
     #define USE_RPM_FILTER
 #endif
 
+#ifdef STM32F3
+#undef USE_WIND_ESTIMATOR
+#undef USE_SERIALRX_SUMD
+#undef USE_SERIALRX_SUMH
+#undef USE_SERIALRX_XBUS
+#undef USE_SERIALRX_JETIEXBUS
+#endif
+
 #ifndef BEEPER_PWM_FREQUENCY
 #define BEEPER_PWM_FREQUENCY    2500
 #endif
