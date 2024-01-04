@@ -29,22 +29,37 @@
 #define NOINLINE
 #endif
 
+#if defined(STM32F3)
+#define DYNAMIC_HEAP_SIZE   1024
+#else
 #define DYNAMIC_HEAP_SIZE   2048
+#endif
 
 #define I2C1_OVERCLOCK false
 #define I2C2_OVERCLOCK false
 #define USE_I2C_PULLUP          // Enable built-in pullups on all boards in case external ones are too week
 
 #define USE_SERIAL_RX
-#define USE_SERIALRX_SPEKTRUM   // Cheap and fairly common protocol
 #define USE_SERIALRX_SBUS       // Very common protocol
+
+#ifndef STM32F3
+#define USE_SERIALRX_SPEKTRUM   // Cheap and fairly common protocol
 #define USE_SERIALRX_IBUS       // Cheap FlySky & Turnigy receivers
 #define USE_SERIALRX_FPORT
 #define USE_SERIALRX_FPORT2
+#endif
 
 //#define USE_DEV_TOOLS           // tools for dev use only. Undefine for release builds.
 
 #define COMMON_DEFAULT_FEATURES (FEATURE_TX_PROF_SEL)
+
+#if defined(STM32F3)
+#define USE_UNDERCLOCK
+//save flash for F3 targets
+#define CLI_MINIMAL_VERBOSITY
+#define SKIP_CLI_COMMAND_HELP
+#define SKIP_CLI_RESOURCES
+#endif
 
 #define USE_SERVO_SBUS
 
@@ -61,6 +76,10 @@
 // This is the shortest period in microseconds that the scheduler will allow
 #define SCHEDULER_DELAY_LIMIT           10
 
+#define USE_RATE_DYNAMICS
+
+#if (MCU_FLASH_SIZE > 256)
+
 #if defined(MAG_I2C_BUS) || defined(VCM5883_I2C_BUS)
 #define USE_MAG_VCM5883
 #endif
@@ -72,7 +91,7 @@
 #define USE_DYNAMIC_FILTERS
 #define USE_GYRO_KALMAN
 #define USE_SMITH_PREDICTOR
-#define USE_RATE_DYNAMICS
+//#define USE_RATE_DYNAMICS
 #define USE_EXTENDED_CMS_MENUS
 
 // Allow default rangefinders
@@ -134,13 +153,22 @@
 //#define USE_SPEKTRUM_VTX_CONTROL //Some functions from betaflight still not implemented
 #define USE_SPEKTRUM_VTX_TELEMETRY
 
-#define USE_VTX_COMMON
+//#define USE_VTX_COMMON
 
 #define USE_SERIALRX_GHST
 #define USE_TELEMETRY_GHST
 
 #define USE_POWER_LIMITS
 
+#define USE_SIMULATOR
+#define USE_PITOT_VIRTUAL
+#define USE_FAKE_BATT_SENSOR
+
+#else // MCU_FLASH_SIZE < 256
+#define LOG_LEVEL_MAXIMUM LOG_LEVEL_ERROR
+#endif
+
+#if (MCU_FLASH_SIZE > 128)
 #define NAV_FIXED_WING_LANDING
 #define USE_SAFE_HOME
 #define USE_AUTOTUNE_FIXED_WING
@@ -152,7 +180,7 @@
 #define USE_TELEMETRY_IBUS
 #define USE_TELEMETRY_SMARTPORT
 #define USE_TELEMETRY_CRSF
-#define USE_TELEMETRY_JETIEXBUS
+//#define USE_TELEMETRY_JETIEXBUS
 // These are rather exotic serial protocols
 #define USE_RX_MSP
 //#define USE_MSP_RC_OVERRIDE
@@ -164,22 +192,26 @@
 #define USE_MULTI_FUNCTIONS  // defines functions only, warnings always defined
 
 //Enable VTX control
+#define USE_VTX_COMMON
 #define USE_VTX_CONTROL
 #define USE_VTX_SMARTAUDIO
 #define USE_VTX_TRAMP
 #define USE_VTX_MSP
 
+#ifndef STM32F3 //F3 series does not have enoug RAM to support logic conditions
 #define USE_PROGRAMMING_FRAMEWORK
 #define USE_CLI_BATCH
+#endif
 
 //Enable DST calculations
 #define RTC_AUTOMATIC_DST
 // Wind estimator
 #define USE_WIND_ESTIMATOR
 
-#define USE_SIMULATOR
-#define USE_PITOT_VIRTUAL
-#define USE_FAKE_BATT_SENSOR
+#else // MCU_FLASH_SIZE < 128
+#define SKIP_TASK_STATISTICS
+#endif
+
 
 #define USE_CMS_FONT_PREVIEW
 

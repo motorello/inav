@@ -1,4 +1,5 @@
 include(stm32-bootloader)
+include(stm32f3)
 include(stm32f4)
 include(stm32f7)
 include(stm32h7)

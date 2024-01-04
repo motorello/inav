@@ -725,7 +725,11 @@ static float dTermProcess(pidState_t *pidState, float currentRateTarget, float d
         delta = dTermLpfFilterApplyFn((filter_t *) &pidState->dtermLpfState, delta);
 
         // Calculate derivative
+#ifdef USE_D_BOOST
         newDTerm =  delta * (pidState->kD * dT_inv) * applyDBoost(pidState, currentRateTarget, dT, dT_inv);
+#else
+        newDTerm =  delta * (pidState->kD * dT_inv) * applyDBoost(pidState, dT);
+#endif
     }
     return(newDTerm);
 }

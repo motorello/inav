@@ -263,7 +263,11 @@ static void vtxMspProcess(vtxDevice_t *vtxDevice, timeUs_t currentTimeUs)
             if (isCrsfPortConfig(portConfig)) {
                 mspCrsfPush(MSP_VTX_CONFIG, frame, sizeof(frame));
             } else {
+#ifdef USE_MSP_OSD
                 mspPort_t *port = getMspOsdPort();
+#else
+                mspPort_t *port = NULL;
+#endif
                 if(port != NULL && port->port) {
                     LOG_DEBUG(VTX, "msp-vtx: mspSerialPushPort\r\n");
                     int sent = mspSerialPushPort(MSP_VTX_CONFIG, frame, sizeof(frame), port, MSP_V2_NATIVE);
