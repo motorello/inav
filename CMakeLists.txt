@@ -88,6 +88,7 @@ endif()
 
 include(stm32)
 include(at32)
+include(gd32)
 include(sitl)
 
 add_subdirectory(src)

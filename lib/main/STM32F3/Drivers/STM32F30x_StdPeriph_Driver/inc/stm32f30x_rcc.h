@@ -578,11 +578,16 @@ typedef struct
   * @{
   */
 
-#define RCC_USBCLKSource_PLLCLK_1Div5   ((uint8_t)0x00)
-#define RCC_USBCLKSource_PLLCLK_Div1    ((uint8_t)0x01)
+// hint from https://github.com/iNavFlight/inav/discussions/8455
+#define RCC_USBCLKSource_PLLCLK_1Div5   ((uint8_t)0x00) // Clk 72 MHz
+#define RCC_USBCLKSource_PLLCLK_Div1    ((uint8_t)0x01) // Clk 48 MHz
+#define RCC_USBCLKSource_PLLCLK_2Div5   ((uint8_t)0x02) // GD32 USB prescaler Clk 120 MHz
+#define RCC_USBCLKSource_PLLCLK_Div2    ((uint8_t)0x03) // GD32 USB prescaler Clk 96 MHz
 
-#define IS_RCC_USBCLK_SOURCE(SOURCE) (((SOURCE) == RCC_USBCLKSource_PLLCLK_1Div5) || \
-                                      ((SOURCE) == RCC_USBCLKSource_PLLCLK_Div1))
+#define IS_RCC_USBCLK_SOURCE(SOURCE) ( ((SOURCE) == RCC_USBCLKSource_PLLCLK_1Div5) || \
+                                       ((SOURCE) == RCC_USBCLKSource_PLLCLK_Div1)  || \
+                                       ((SOURCE) == RCC_USBCLKSource_PLLCLK_2Div5) || \
+                                       ((SOURCE) == RCC_USBCLKSource_PLLCLK_Div2) )
 /**
   * @}
   */

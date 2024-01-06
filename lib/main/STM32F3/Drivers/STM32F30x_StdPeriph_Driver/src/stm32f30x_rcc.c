@@ -91,6 +91,8 @@
 #define CFGR_OFFSET               (RCC_OFFSET + 0x04)
 #define USBPRE_BitNumber          0x16
 #define CFGR_USBPRE_BB            (PERIPH_BB_BASE + (CFGR_OFFSET * 32) + (USBPRE_BitNumber * 4))
+// hint from https://github.com/iNavFlight/inav/discussions/8455
+#define CFGR_USBPRE_BB1           (PERIPH_BB_BASE + (CFGR_OFFSET * 32) + ((USBPRE_BitNumber+1) * 4)) // Address of GD32 second bit of USB prescaler
 /* Alias word address of I2SSRC bit */
 #define I2SSRC_BitNumber          0x17
 #define CFGR_I2SSRC_BB            (PERIPH_BB_BASE + (CFGR_OFFSET * 32) + (I2SSRC_BitNumber * 4))
@@ -1433,6 +1435,10 @@ void RCC_USBCLKConfig(uint32_t RCC_USBCLKSource)
   assert_param(IS_RCC_USBCLK_SOURCE(RCC_USBCLKSource));
 
   *(__IO uint32_t *) CFGR_USBPRE_BB = RCC_USBCLKSource;
+#ifdef GD32F3
+  // hint from https://github.com/iNavFlight/inav/discussions/8455
+  *(__IO uint32_t *) CFGR_USBPRE_BB1 = RCC_USBCLKSource>>1; // Set second bit of USB prescaler
+#endif
 }
 
 /**

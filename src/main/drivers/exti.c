@@ -34,7 +34,7 @@ static const uint8_t extiGroupIRQn[EXTI_IRQ_GROUPS] = {
     EXTI9_5_IRQn,
     EXTI15_10_IRQn
 };
-#elif defined(STM32F3)
+#elif defined(STM32F3) || defined(GD32F3)
 static const uint8_t extiGroupIRQn[EXTI_IRQ_GROUPS] = {
     EXTI0_IRQn,
     EXTI1_IRQn,
@@ -74,7 +74,7 @@ static const uint8_t extiGroupIRQn[EXTI_IRQ_GROUPS] = {
 
 void EXTIInit(void)
 {
-#if defined(STM32F3) || defined(STM32F4)
+#if defined(STM32F3) || defined(STM32F4) || defined(GD32F3)
     /* Enable SYSCFG clock otherwise the EXTI irq handlers are not called */
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
 #elif defined(AT32F43x)  
@@ -219,7 +219,7 @@ void EXTIEnable(IO_t io, bool enable)
         EXTI_REG_IMR |= extiLine;
     else
         EXTI_REG_IMR &= ~extiLine;
-#elif defined(STM32F303xC)
+#elif defined(STM32F303xC) || defined(GD32F303) // this should be valid for all GD32F303 cpu
     int extiLine = IO_EXTI_Line(io);
     if (extiLine < 0)
         return;
@@ -267,7 +267,7 @@ _EXTI_IRQ_HANDLER(EXTI0_IRQHandler);
 _EXTI_IRQ_HANDLER(EXTI1_IRQHandler);
 #if defined(STM32F7) || defined(STM32H7)
 _EXTI_IRQ_HANDLER(EXTI2_IRQHandler);
-#elif defined(STM32F3) || defined(STM32F4) || defined(AT32F43x)  
+#elif defined(STM32F3) || defined(STM32F4) || defined(AT32F43x) || defined(GD32F3)
 _EXTI_IRQ_HANDLER(EXTI2_TS_IRQHandler);
 #else
 # warning "Unknown CPU"

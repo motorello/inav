@@ -81,7 +81,7 @@
   #define STM32F303xC
 #endif /* STM32F30X */
 
-#if !defined (STM32F303xC) && !defined (STM32F334x8) && !defined (STM32F302x8)
+#if !defined (STM32F303xC) && !defined (STM32F334x8) && !defined (STM32F302x8) && !defined(GD32F3)
  #error "Please select first the target STM32F30X device used in your application (in stm32f30x.h file)"
 #endif
 
@@ -182,7 +182,7 @@ typedef enum IRQn
   PendSV_IRQn                 = -2,     /*!< 14 Cortex-M4 Pend SV Interrupt                                    */
   SysTick_IRQn                = -1,     /*!< 15 Cortex-M4 System Tick Interrupt                                */
 /******  STM32 specific Interrupt Numbers **********************************************************************/
-#ifdef STM32F303xC 
+#if defined(STM32F303xC) || defined(GD32F303)
   WWDG_IRQn                   = 0,      /*!< Window WatchDog Interrupt                                         */
   PVD_IRQn                    = 1,      /*!< PVD through EXTI Line detection Interrupt                         */
   TAMPER_STAMP_IRQn           = 2,      /*!< Tamper and TimeStamp interrupts                                   */

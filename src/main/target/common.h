@@ -29,7 +29,7 @@
 #define NOINLINE
 #endif
 
-#if defined(STM32F3)
+#if defined(STM32F3) || defined(GD32F303xC) // likely with GD32F303xE (64kB SRAM) or GD32F303xG (96kB SRAM), DYNAMIC_HEAP_SIZE can be 2048
 #define DYNAMIC_HEAP_SIZE   1024
 #else
 #define DYNAMIC_HEAP_SIZE   2048
@@ -42,7 +42,7 @@
 #define USE_SERIAL_RX
 #define USE_SERIALRX_SBUS       // Very common protocol
 
-#ifndef STM32F3
+#if !defined(STM32F3) && !defined(GD32F303xC)
 #define USE_SERIALRX_SPEKTRUM   // Cheap and fairly common protocol
 #define USE_SERIALRX_IBUS       // Cheap FlySky & Turnigy receivers
 #define USE_SERIALRX_FPORT
@@ -53,12 +53,12 @@
 
 #define COMMON_DEFAULT_FEATURES (FEATURE_TX_PROF_SEL)
 
-#if defined(STM32F3)
+#if defined(STM32F3) || defined(GD32F303xC)
 #define USE_UNDERCLOCK
 //save flash for F3 targets
-#define CLI_MINIMAL_VERBOSITY
-#define SKIP_CLI_COMMAND_HELP
-#define SKIP_CLI_RESOURCES
+//#define CLI_MINIMAL_VERBOSITY
+//#define SKIP_CLI_COMMAND_HELP
+//#define SKIP_CLI_RESOURCES
 #endif
 
 #define USE_SERVO_SBUS
@@ -79,6 +79,15 @@
 #define USE_RATE_DYNAMICS
 
 #if (MCU_FLASH_SIZE > 256)
+
+//F3 series does not have enoug RAM to support logic conditions
+#define USE_PROGRAMMING_FRAMEWORK
+#define USE_CLI_BATCH
+
+//save flash for F3 targets
+#define CLI_MINIMAL_VERBOSITY
+#define SKIP_CLI_COMMAND_HELP
+#define SKIP_CLI_RESOURCES
 
 #if defined(MAG_I2C_BUS) || defined(VCM5883_I2C_BUS)
 #define USE_MAG_VCM5883
@@ -198,10 +207,10 @@
 #define USE_VTX_TRAMP
 #define USE_VTX_MSP
 
-#ifndef STM32F3 //F3 series does not have enoug RAM to support logic conditions
-#define USE_PROGRAMMING_FRAMEWORK
-#define USE_CLI_BATCH
-#endif
+//#ifndef STM32F3 //F3 series does not have enoug RAM to support logic conditions
+//#define USE_PROGRAMMING_FRAMEWORK
+//#define USE_CLI_BATCH
+//#endif
 
 //Enable DST calculations
 #define RTC_AUTOMATIC_DST
