@@ -444,7 +444,7 @@
  #define  GPIO_SPEED_HIGH        GPIO_SPEED_FREQ_VERY_HIGH     
 #endif /* STM32L1 */
 
-#if defined(STM32F0) || defined(STM32F3) || defined(STM32F1)
+#if defined(STM32F0) || defined(STM32F3) || defined(STM32F1) || defined(GD32F3)
  #define  GPIO_SPEED_LOW    GPIO_SPEED_FREQ_LOW
  #define  GPIO_SPEED_MEDIUM GPIO_SPEED_FREQ_MEDIUM
  #define  GPIO_SPEED_HIGH   GPIO_SPEED_FREQ_HIGH
@@ -491,7 +491,7 @@
 #define I2C_NOSTRETCH_ENABLED                   I2C_NOSTRETCH_ENABLE
 #define I2C_ANALOGFILTER_ENABLED                I2C_ANALOGFILTER_ENABLE
 #define I2C_ANALOGFILTER_DISABLED               I2C_ANALOGFILTER_DISABLE
-#if defined(STM32F0) || defined(STM32F1) || defined(STM32F3) || defined(STM32G0) || defined(STM32L4) || defined(STM32L1) || defined(STM32F7)
+#if defined(STM32F0) || defined(STM32F1) || defined(STM32F3) || defined(STM32G0) || defined(STM32L4) || defined(STM32L1) || defined(STM32F7) || defined(GD32F3)
 #define HAL_I2C_STATE_MEM_BUSY_TX               HAL_I2C_STATE_BUSY_TX
 #define HAL_I2C_STATE_MEM_BUSY_RX               HAL_I2C_STATE_BUSY_RX
 #define HAL_I2C_STATE_MASTER_BUSY_TX            HAL_I2C_STATE_BUSY_TX
@@ -1406,7 +1406,7 @@
 /** @defgroup HAL_COMP_Aliased_Macros HAL COMP Aliased Macros maintained for legacy purpose
   * @{
   */
-#if defined(STM32F3)
+#if defined(STM32F3) || defined(GD32F3)
 #define COMP_START                                       __HAL_COMP_ENABLE
 #define COMP_STOP                                        __HAL_COMP_DISABLE
 #define COMP_LOCK                                        __HAL_COMP_LOCK

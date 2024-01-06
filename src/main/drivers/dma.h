@@ -61,7 +61,7 @@ typedef void (*dmaCallbackHandlerFuncPtr)(DMA_t channelDescriptor);
         #define DMA_IT_TCIF                         ((uint32_t)0x00000020)
         #define DMA_IT_HTIF                         ((uint32_t)0x00000010)
         #define DMA_IT_DMEIF                        ((uint32_t)0x00000004)
-    #elif defined (STM32F3)
+    #elif defined (STM32F3) || defined (GD32F3)
         #define DMA_IT_TCIF                          ((uint32_t)0x00000002)
         #define DMA_IT_HTIF                          ((uint32_t)0x00000004)
         #define DMA_IT_TEIF                          ((uint32_t)0x00000008)
@@ -142,7 +142,7 @@ DMA_t dmaGetByRef(const dma_channel_type * ref);
 
 void dmaMuxEnable(DMA_t dma, uint32_t dmaMuxid);
 
-#elif defined(STM32F3)
+#elif defined(STM32F3) || defined(GD32F3)
 
 #define DEFINE_DMA_CHANNEL(d, c, f) { \
                                         .tag = DMA_TAG(d, 0, c), \

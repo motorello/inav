@@ -37,7 +37,7 @@ int IO_GPIOPinIdx(IO_t io);
 int IO_GPIO_PinSource(IO_t io);
 int IO_GPIO_PortSource(IO_t io);
 
-#if defined(STM32F3) || defined(STM32F4) || defined(AT32F43x)
+#if defined(STM32F3) || defined(STM32F4) || defined(AT32F43x) || defined(GD32F3)
 int IO_EXTI_PortSourceGPIO(IO_t io);
 int IO_EXTI_PinSource(IO_t io);
 #endif

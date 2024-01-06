@@ -12,7 +12,7 @@ void RCC_ClockCmd(rccPeriphTag_t periphTag, FunctionalState NewState)
     switch (tag) 
     {
 
-        #if defined(STM32F3)
+        #if defined(STM32F3) || defined(GD32F3)
             case RCC_AHB:
                 RCC_BIT_CMD(RCC->AHBENR, mask, NewState);
                 break;
@@ -92,7 +92,7 @@ void RCC_ResetCmd(rccPeriphTag_t periphTag, FunctionalState NewState)
 
     switch (tag) 
     {
-       #if defined(STM32F3)
+       #if defined(STM32F3) || defined(GD32F3)
             case RCC_AHB:
                 RCC_BIT_CMD(RCC->AHBRSTR, mask, NewState);
                 break;

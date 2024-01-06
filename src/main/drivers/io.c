@@ -30,7 +30,7 @@ struct ioPortDef_s {
     rccPeriphTag_t rcc;
 };
 
-#if defined(STM32F3)
+#if defined(STM32F3) || defined(GD32F3)
 const struct ioPortDef_s ioPortDefs[] = {
     { RCC_AHB(GPIOA) },
     { RCC_AHB(GPIOB) },
@@ -156,7 +156,7 @@ uint32_t IO_EXTI_Line(IO_t io)
     }
 #if defined(STM32F1) || defined(STM32F4) || defined(STM32F7) || defined(STM32H7) || defined(AT32F43x)
     return 1 << IO_GPIOPinIdx(io);
-#elif defined(STM32F3)
+#elif defined(STM32F3) || defined(GD32F3)
     return IO_GPIOPinIdx(io);
 #elif defined (SITL_BUILD)
     return 0;
@@ -339,7 +339,7 @@ void IOConfigGPIOAF(IO_t io, ioConfig_t cfg, uint8_t af)
     HAL_GPIO_Init(IO_GPIO(io), &init);
 }
 
-#elif defined(STM32F3) || defined(STM32F4)
+#elif defined(STM32F3) || defined(STM32F4) || defined(GD32F3)
 
 void IOConfigGPIO(IO_t io, ioConfig_t cfg)
 {

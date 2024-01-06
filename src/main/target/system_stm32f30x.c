@@ -319,6 +319,25 @@ void SetSysClock(uint8_t underclock)
 
     if (!underclock) {
         // Full speed
+#ifdef GD32F3 // the GD32F303 clocks at 120MHz instead of 72MHz
+        // hint from https://github.com/iNavFlight/inav/discussions/8455
+        if (HSE_VALUE == 12000000) {
+            RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_PREDIV1 | RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLMULL10);
+        }
+        else { // this should be the case of HSE = 8MHz
+            RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_PREDIV1 | RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLMULL15);
+        }
+    }
+    else {
+        // Reduced speed
+        if (HSE_VALUE == 12000000) {
+            RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_PREDIV1 | RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLMULL6);
+        }
+        else {
+            RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_PREDIV1 | RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLMULL9);
+        }
+    }
+#else
         if (HSE_VALUE == 12000000) {
             RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_PREDIV1 | RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLMULL6);
         }
@@ -335,6 +354,7 @@ void SetSysClock(uint8_t underclock)
             RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_PREDIV1 | RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLMULL6);
         }
     }
+#endif // GD32F3
 
     /* Enable PLL */
     RCC->CR |= RCC_CR_PLLON;

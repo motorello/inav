@@ -446,7 +446,7 @@
  #define  GPIO_SPEED_HIGH        GPIO_SPEED_FREQ_VERY_HIGH     
 #endif /* STM32L1 */
 
-#if defined(STM32F0) || defined(STM32F3) || defined(STM32F1)
+#if defined(STM32F0) || defined(STM32F3) || defined(STM32F1) || defined(GD32F3)
  #define  GPIO_SPEED_LOW    GPIO_SPEED_FREQ_LOW
  #define  GPIO_SPEED_MEDIUM GPIO_SPEED_FREQ_MEDIUM
  #define  GPIO_SPEED_HIGH   GPIO_SPEED_FREQ_HIGH

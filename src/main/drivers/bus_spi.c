@@ -29,7 +29,7 @@
 #include "drivers/rcc.h"
 
 /* for F30x processors */
-#if defined(STM32F303xC)
+#if defined(STM32F303xC) || defined(GD32F303)
 #ifndef GPIO_AF_SPI1
 #define GPIO_AF_SPI1    GPIO_AF_5
 #endif
@@ -72,7 +72,7 @@
 #define SPI3_NSS_PIN NONE
 #endif
 
-#if defined(STM32F3)
+#if defined(STM32F3) || defined(GD32F3)
 #if defined(USE_SPI_DEVICE_1)
 static const uint32_t spiDivisorMapFast[] = {
     SPI_BaudRatePrescaler_256,    // SPI_CLOCK_INITIALIZATON      281.25 KBits/s
@@ -188,7 +188,7 @@ bool spiInitDevice(SPIDevice device, bool leadingEdge)
     IOInit(IOGetByTag(spi->miso), OWNER_SPI, RESOURCE_SPI_MISO, device + 1);
     IOInit(IOGetByTag(spi->mosi), OWNER_SPI, RESOURCE_SPI_MOSI, device + 1);
 
-#if defined(STM32F3) || defined(STM32F4)
+#if defined(STM32F3) || defined(STM32F4) || defined(GD32F3)
     if (leadingEdge) {
         IOConfigGPIOAF(IOGetByTag(spi->sck),  SPI_IO_AF_SCK_CFG, spi->af);
         IOConfigGPIOAF(IOGetByTag(spi->miso), SPI_IO_AF_MISO_CFG, spi->af);
@@ -226,7 +226,7 @@ bool spiInitDevice(SPIDevice device, bool leadingEdge)
         spiInit.SPI_CPHA = SPI_CPHA_2Edge;
     }
 
-#ifdef STM32F303xC
+#if defined(STM32F303xC) || defined(GD32F303)
     // Configure for 8-bit reads.
     SPI_RxFIFOThresholdConfig(spi->dev, SPI_RxFIFOThreshold_QF);
 #endif
@@ -262,7 +262,7 @@ uint8_t spiTransferByte(SPI_TypeDef *instance, uint8_t data)
         if ((spiTimeout--) == 0)
             return spiTimeoutUserCallback(instance);
 
-#ifdef STM32F303xC
+#if defined(STM32F303xC) || defined(GD32F303)
     SPI_SendData8(instance, data);
 #else
     SPI_I2S_SendData(instance, data);
@@ -272,7 +272,7 @@ uint8_t spiTransferByte(SPI_TypeDef *instance, uint8_t data)
         if ((spiTimeout--) == 0)
             return spiTimeoutUserCallback(instance);
 
-#ifdef STM32F303xC
+#if defined(STM32F303xC) || defined(GD32F303)
     return ((uint8_t)SPI_ReceiveData8(instance));
 #else
     return ((uint8_t)SPI_I2S_ReceiveData(instance));
@@ -284,7 +284,7 @@ uint8_t spiTransferByte(SPI_TypeDef *instance, uint8_t data)
  */
 bool spiIsBusBusy(SPI_TypeDef *instance)
 {
-#ifdef STM32F303xC
+#if defined(STM32F303xC) || defined(GD32F303)
     return SPI_GetTransmissionFIFOStatus(instance) != SPI_TransmissionFIFOStatus_Empty || SPI_I2S_GetFlagStatus(instance, SPI_I2S_FLAG_BSY) == SET;
 #else
     return SPI_I2S_GetFlagStatus(instance, SPI_I2S_FLAG_TXE) == RESET || SPI_I2S_GetFlagStatus(instance, SPI_I2S_FLAG_BSY) == SET;
@@ -303,7 +303,7 @@ bool spiTransfer(SPI_TypeDef *instance, uint8_t *out, const uint8_t *in, int len
             if ((spiTimeout--) == 0)
                 return spiTimeoutUserCallback(instance);
         }
-#ifdef STM32F303xC
+#if defined(STM32F303xC) || defined(GD32F303)
         SPI_SendData8(instance, b);
 #else
         SPI_I2S_SendData(instance, b);
@@ -313,7 +313,7 @@ bool spiTransfer(SPI_TypeDef *instance, uint8_t *out, const uint8_t *in, int len
             if ((spiTimeout--) == 0)
                 return spiTimeoutUserCallback(instance);
         }
-#ifdef STM32F303xC
+#if defined(STM32F303xC) || defined(GD32F303)
         b = SPI_ReceiveData8(instance);
 #else
         b = SPI_I2S_ReceiveData(instance);
