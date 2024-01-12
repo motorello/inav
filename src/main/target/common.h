@@ -54,7 +54,7 @@
 #define COMMON_DEFAULT_FEATURES (FEATURE_TX_PROF_SEL)
 
 #if defined(STM32F3) || defined(GD32F303xC)
-#define USE_UNDERCLOCK
+//#define USE_UNDERCLOCK
 //save flash for F3 targets
 //#define CLI_MINIMAL_VERBOSITY
 //#define SKIP_CLI_COMMAND_HELP

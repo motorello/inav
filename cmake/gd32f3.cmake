@@ -100,9 +100,31 @@ endfunction()
 function(target_gd32f303xc name)
     target_gd32f3xx(
         NAME ${name}
-        STARTUP startup_stm32f30x_md_gcc.S
+        STARTUP startup_gd32f30x_md_gcc.S
         COMPILE_DEFINITIONS ${GD32F303CC_DEFINITIONS}
         LINKER_SCRIPT gd32_flash_f303xc
+        SVD STM32F303
+        ${ARGN}
+    )
+endfunction()
+
+function(target_gd32f303xc_noCCM name)
+    target_gd32f3xx(
+        NAME ${name}
+        STARTUP startup_gd32f30x_md_gcc.S
+        COMPILE_DEFINITIONS ${GD32F303CC_DEFINITIONS}
+        LINKER_SCRIPT gd32_flash_f303xc_noCCM
+        SVD STM32F303
+        ${ARGN}
+    )
+endfunction()
+
+function(target_gd32f303xc_fakeCCM name)
+    target_gd32f3xx(
+        NAME ${name}
+        STARTUP startup_gd32f30x_md_gcc.S
+        COMPILE_DEFINITIONS ${GD32F303CC_DEFINITIONS}
+        LINKER_SCRIPT gd32_flash_f303xc_fakeCCM
         SVD STM32F303
         ${ARGN}
     )
@@ -111,7 +133,7 @@ endfunction()
 function(target_gd32f303xe name)
     target_gd32f3xx(
         NAME ${name}
-        STARTUP startup_stm32f30x_md_gcc.S
+        STARTUP startup_gd32f30x_md_gcc.S
         COMPILE_DEFINITIONS ${GD32F303CE_DEFINITIONS}
         LINKER_SCRIPT gd32_flash_f303xe
         SVD STM32F303
@@ -122,7 +144,7 @@ endfunction()
 function(target_gd32f303xg name)
     target_gd32f3xx(
         NAME ${name}
-        STARTUP startup_stm32f30x_md_gcc.S
+        STARTUP startup_gd32f30x_md_gcc.S
         COMPILE_DEFINITIONS ${GD32F303CG_DEFINITIONS}
         LINKER_SCRIPT gd32_flash_f303xg
         SVD STM32F303
